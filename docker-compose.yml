@@ -1,0 +1,35 @@
+services:
+  app:
+    image: ghcr.io/mamura/php82-node16:latest
+    container_name: ceci-api
+    labels:
+      - "traefik.enable=true"
+    volumes:
+      - ./src:/src
+    environment:
+      - PROJECT_WEBROOT=/src/public
+    ports:
+      - "80:80"
+      - "5173:5173"
+
+  mysql:
+    image: mysql:8.0
+    container_name: ceciapi-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ceci
+      MYSQL_USER: ceci
+      MYSQL_PASSWORD: ceci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+ 
+networks:
+  default:
+      name: mamura_network
+      external: true
